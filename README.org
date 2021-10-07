@@ -39,9 +39,9 @@ done
 
     #+end_src
 
-    # removed arn from centos-7-dcv-installer.json 
-    #+header :tangle imagebuilder/configs/update-distribution-centos-7-dcv-installer.json
-    #+begin_src js
+    # removed arn from centos-7-dcv-installer.json
+    
+    #+begin_src js :tangle imagebuilder/configs/update-distribution-centos-7-dcv-installer.json
 {
     "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
     "distributionConfigurationArn": "arn:aws:imagebuilder:us-east-2:806722994991:distribution-configuration/nice-dcv-on-centos-7-9",
@@ -54,7 +54,7 @@ done
                 "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-"XXXXXXXXXXXX"                    ]
+"037225831026"                    ]
                 }
             }
         },
@@ -65,7 +65,7 @@ done
                 "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-"XXXXXXXXXXXX"                    ]
+"037225831026"                    ]
                 }
             }
         },
@@ -76,7 +76,7 @@ done
                 "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-"XXXXXXXXXXXX"                    ]
+"037225831026"                    ]
                 }
             }
         },
@@ -87,7 +87,7 @@ done
                 "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-"XXXXXXXXXXXX"                    ]
+"037225831026"                    ]
                 }
             }
         } 
@@ -111,7 +111,7 @@ done
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "XXXXXXXXXXXX"                    ]
+                        "037225831026"                    ]
                 }
             }
         },
@@ -122,7 +122,7 @@ done
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "XXXXXXXXXXXX"                    ]
+                        "037225831026"                    ]
                 }
             }
         },
@@ -133,7 +133,7 @@ done
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "XXXXXXXXXXXX"                    ]
+                        "037225831026"                    ]
                 }
             }
         },
@@ -144,7 +144,7 @@ done
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "XXXXXXXXXXXX"                    ]
+                        "037225831026"                    ]
                 }
             }
         }
@@ -444,6 +444,23 @@ phases:
             - |
               sudo DISPLAY=:0 XAUTHORITY=$(ps aux | grep "X.*\-auth" | grep -v grep | sed -n 's/.*-auth \([^ ]\+\).*/\1/p') glxinfo | grep -q -i "opengl.*version"
     #+end_src    
+
+    #+begin_src shell 
+    # run from root directory as the paths are relative to the root.
+semver=$VERSION
+change_description="There is no way to extract useful information on glx-utils from ssm agent"
+component_name="centos-7-installer.yml"
+s3_uri="s3://centos-nice-dcv-image-builder-conf/components/${component_name}"
+aws --profile centos-dojo s3 cp imagebuilder/components/${component_name} ${s3_uri}
+
+aws --profile centos-dojo imagebuilder create-component --region us-east-2 --name "Add Nice - DCV" --semantic-version ${semver} \
+    --description "Include Nice - DCV client in image" \
+    --supported-os-versions "CentOS Enterprise Linux 7","CentOS Linux 7" \
+    --platform "Linux" \
+    --tags maintained_by=davdunc,stage=test,version=1 \
+    --uri $s3_uri --change-description "${change_description}"
+
+    #+end_src
 
 ** Image Recipes
 *** CentOS 7 Image Recipe
