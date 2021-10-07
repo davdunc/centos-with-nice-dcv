@@ -44,7 +44,7 @@ done
     #+begin_src js
 {
     "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
-    "distributionConfigurationArn": "arn:aws:imagebuilder:us-east-2:425685993791:distribution-configuration/nice-dcv-on-centos-7-9",
+    "distributionConfigurationArn": "arn:aws:imagebuilder:us-east-2:806722994991:distribution-configuration/nice-dcv-on-centos-7-9",
 
     "distributions": [
         {
@@ -54,12 +54,7 @@ done
                 "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+"XXXXXXXXXXXX"                    ]
                 }
             }
         },
@@ -70,12 +65,7 @@ done
                 "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+"XXXXXXXXXXXX"                    ]
                 }
             }
         },
@@ -86,12 +76,7 @@ done
                 "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+"XXXXXXXXXXXX"                    ]
                 }
             }
         },
@@ -102,12 +87,7 @@ done
                 "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+"XXXXXXXXXXXX"                    ]
                 }
             }
         } 
@@ -118,7 +98,7 @@ done
     #+end_src
 
 *** CentOS 8 Stream Distribution Settings
-    "distributionConfigurationArn": "arn:aws:imagebuilder:us-east-2:425685993791:distribution-configuration/nice-dcv-on-centos-8-1",
+    "distributionConfigurationArn": "arn:aws:imagebuilder:us-east-2:806722994991:distribution-configuration/nice-dcv-on-centos-8-1",
     
     #+begin_src js :tangle imagebuilder/configs/update-distribution-centos-8-dcv-installer.json
 {
@@ -127,64 +107,44 @@ done
         {
             "region": "us-east-1",
             "amiDistributionConfiguration": {
-                "name": "CentOS-8_4_0_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "name": "CentOS-Stream_8_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+                        "XXXXXXXXXXXX"                    ]
                 }
             }
         },
         {
             "region": "us-east-2",
             "amiDistributionConfiguration": {
-                "name": "CentOS-8_4_0_HVM-YYYYMMDD-x86_64-1-Hourly2-GP2 {{imagebuilder:buildDate}}",
+                "name": "CentOS-Stream_8_HVM-YYYYMMDD-x86_64-1-Hourly2-GP2 {{imagebuilder:buildDate}}",
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+                        "XXXXXXXXXXXX"                    ]
                 }
             }
         },
         {
             "region": "us-west-2",
             "amiDistributionConfiguration": {
-                "name": "CentOS-8_4_0_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "name": "CentOS-Stream_8_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+                        "XXXXXXXXXXXX"                    ]
                 }
             }
         },
         {
             "region": "eu-west-1",
             "amiDistributionConfiguration": {
-                "name": "CentOS-8_4_0_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "name": "CentOS-Stream_8_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
                 "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
-                        "779356877618",
-                        "068406267472",
-                        "679593333241",
-                        "593130699285",
-                        "582767206473"
-                    ]
+                        "XXXXXXXXXXXX"                    ]
                 }
             }
         }
@@ -492,11 +452,11 @@ phases:
     "name": "CentOS-7-with-Nice-DCV",
     "description": "Configuration for building an AMI for CentOS 8.4 with Nice DCV",
     "platform": "Linux",
-    "owner": "425685993791",
+    "owner": "806722994991",
     "version": "0.0.1",
     "components": [
         {
-            "componentArn": "arn:aws:imagebuilder:us-east-2:425685993791:component/add-nice---dcv/x.x.x"
+            "componentArn": "arn:aws:imagebuilder:us-east-2:806722994991:component/add-nice---dcv/x.x.x"
         }
     ],
     "parentImage": "ami-06126461a14d4e185",
@@ -521,21 +481,21 @@ phases:
 }
    #+end_src
     
-*** CentOS 8 Image Recipe
+*** CentOS Stream 8 Image Recipe
    #+begin_src js :tangle imagebuilder/configs/image-recipe-centos-8-with-nice-dcv.json
 {
-    "arn": "arn:aws:imagebuilder:us-east-2:425685993791:image-recipe/centos-with-nice-dcv/0.1.6",
+    "arn": "arn:aws:imagebuilder:us-east-2:806722994991:image-recipe/centos-with-nice-dcv/0.1.6",
     "name": "CentOS-8-with-Nice-DCV",
     "description": "Configuration for building an AMI for CentOS 8.4 with Nice DCV",
     "platform": "Linux",
-    "owner": "425685993791",
+    "owner": "806722994991",
     "version": "0.1.6",
     "components": [
         {
-            "componentArn": "arn:aws:imagebuilder:us-east-2:425685993791:component/add-nice---dcv/x.x.x"
+            "componentArn": "arn:aws:imagebuilder:us-east-2:806722994991:component/add-nice---dcv/x.x.x"
         }
     ],
-    "parentImage": "ami-06126461a14d4e185",
+    "parentImage": "ami-045b0a05944af45c1",
     "blockDeviceMappings": [
         {
             "deviceName": "/dev/sda1",
@@ -583,14 +543,14 @@ phases:
   },
   "keyPair" : "davdunc@amazon.com",
   "terminateInstanceOnFailure" : false,
-  "snsTopicArn": "arn:aws:sns:us-east-2:425685993791:CentOSDCV"
+  "snsTopicArn": "arn:aws:sns:us-east-2:806722994991:CentOSDCV"
 }
    #+end_src
 
    Update infrastructure configuration:
    #+begin_src js
 {
-    "infrastructureConfigurationArn": "arn:aws:imagebuilder:us-east-2:425685993791:CentOS7withNiceDCV",
+    "infrastructureConfigurationArn": "arn:aws:imagebuilder:us-east-2:806722994991:CentOS7withNiceDCV",
     "description" : "Supporting Infrastructure for building CentOS 7.9",
     "instanceTypes": [
         "m5.large", "t3a.large"
@@ -608,7 +568,7 @@ phases:
     },
     "keyPair" : "davdunc@amazon.com",
     "terminateInstanceOnFailure" : false,
-    "snsTopicArn": "arn:aws:sns:us-east-2:425685993791:CentOSDCV"
+    "snsTopicArn": "arn:aws:sns:us-east-2:806722994991:CentOSDCV"
 }
    #+end_src
 *** CentOS 8 Infrastructure Configuration
@@ -632,7 +592,7 @@ phases:
     },
     "keyPair" : "davdunc@amazon.com",
     "terminateInstanceOnFailure" : false,
-    "snsTopicArn": "arn:aws:sns:us-east-2:425685993791:CentOSDCV"
+    "snsTopicArn": "arn:aws:sns:us-east-2:806722994991:CentOSDCV"
 }
     #+end_src
 ** Sync to S3 for Access    
