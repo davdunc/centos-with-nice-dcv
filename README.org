@@ -32,7 +32,7 @@ mkdir -p ./scripts
     :END:
     Verify that the ARN is available
     #+begin_src shell :results raw
-for ARN in $(aws imagebuilder list-distribution-configurations --query 'distributionConfigurationSummaryList[].arn' --output text)
+for ARN in $(aws --profile centos-dojo imagebuilder list-distribution-configurations --query 'distributionConfigurationSummaryList[].arn' --output text)
 do
     echo $ARN
 done
@@ -158,7 +158,7 @@ done
     #+begin_src shell :tangle scripts/update-distribution-centos-8-dcv-installer.sh :shebang "#!/bin/bash"
 build_date=$(date +%Y%m%d) 
 
-aws imagebuilder update-distribution-configuration --region us-east-2 \
+aws --profile centos-dojo imagebuilder update-distribution-configuration --region us-east-2 \
     --cli-input-json file://imagebuilder/configs/update-distribution-centos-8-dcv-installer.json
     #+end_src
 
@@ -307,9 +307,9 @@ semver=$VERSION
 change_description="There is no way to extract useful information on glx-utils from ssm agent"
 component_name="centos-8-installer.yml"
 s3_uri="s3://centos-nice-dcv-image-builder-conf/components/${component_name}"
-aws s3 cp imagebuilder/components/${component_name} ${s3_uri}
+aws --profile centos-dojo s3 cp imagebuilder/components/${component_name} ${s3_uri}
 
-aws imagebuilder create-component --region us-east-2 --name "Add Nice - DCV" --semantic-version ${semver} \
+aws --profile centos-dojo imagebuilder create-component --region us-east-2 --name "Add Nice - DCV" --semantic-version ${semver} \
     --description "Include Nice - DCV client in image" \
     --supported-os-versions "CentOS Enterprise Linux 8","CentOS Linux 8" \
     --platform "Linux" \
@@ -599,7 +599,7 @@ phases:
     Sync to s3 for access
 
     #+begin_src shell :tangle scripts/sync-to-s3-conf-bucket.sh :shebang "#!/bin/bash"
-aws s3 sync /home/ANT.AMAZON.COM/davdunc/src/centos-with-nice-dcv/ s3://centos-nice-dcv-image-builder-conf/
+aws --profile centos-dojo s3 sync /home/ANT.AMAZON.COM/davdunc/src/centos-with-nice-dcv/ s3://centos-nice-dcv-image-builder-conf/
     #+end_src
 
     #+RESULTS:
@@ -845,18 +845,18 @@ done
 *** Update the Components to latest
     #+header :var conf_s3_bucket=centos-nice-dcv-image-builder-conf
     #+begin_src shell :tangle scripts/update-distribution-centos-dcv-installers.sh :shebang "#!/bin/bash"
-aws s3 cp ./imagebuilder/components/centos-8-installer.yml $conf_s3_bucket
-aws s3 cp ./imagebuilder/components/centos-7-installer.yml $conf_s3_bucket
+aws --profile centos-dojo s3 cp ./imagebuilder/components/centos-8-installer.yml $conf_s3_bucket
+aws --profile centos-dojo s3 cp ./imagebuilder/components/centos-7-installer.yml $conf_s3_bucket
     
-aws imagebuilder update-distribution-configuration --region us-east-2 \
+aws --profile centos-dojo imagebuilder update-distribution-configuration --region us-east-2 \
     --cli-input-json file://imagebuilder/configs/update-distribution-centos-7-dcv-installer.json
-aws imagebuilder update-distribution-configuration --region us-east-2 \
+aws --profile centos-dojo imagebuilder update-distribution-configuration --region us-east-2 \
     --cli-input-json file://imagebuilder/configs/update-distribution-centos-8-dcv-installer.json
     #+end_src
    #+begin_src shell :tangle scripts/create-image-recipe-centos-with-nice-dcv.sh :shebang "#!/bin/bash"
-aws imagebuilder --region us-east-2 create-image-recipe \
+aws --profile centos-dojo imagebuilder --region us-east-2 create-image-recipe \
     --cli-input-json file://imagebuilder/configs/image-recipe-centos-8-with-nice-dcv.json
-aws imagebuilder --region us-east-2 create-image-recipe \
+aws --profile centos-dojo imagebuilder --region us-east-2 create-image-recipe \
     --cli-input-json file://imagebuilder/configs/image-recipe-centos-7-with-nice-dcv.json
    #+end_src
 
