@@ -26,7 +26,7 @@ mkdir -p ./scripts
 ** Policy Requirements
    
 ** Distribution Settings
-*** CentOS 7.9 Distribution Settings
+*** CentOS 7 Distribution Settings
     :PROPERTIES:
     :header-args: :var VERSION="0.1.17"
     :END:
@@ -51,7 +51,7 @@ done
             "region": "us-east-1",
             "amiDistributionConfiguration": {
                 "name": "CentOS-7_9_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
-                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
 "XXXXXXXXXXXX"                    ]
@@ -62,7 +62,7 @@ done
             "region": "us-east-2",
             "amiDistributionConfiguration": {
                 "name": "CentOS-7_9_HVM-YYYYMMDD-x86_64-1-Hourly2-GP2 {{imagebuilder:buildDate}}",
-                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
 "XXXXXXXXXXXX"                    ]
@@ -73,7 +73,7 @@ done
             "region": "us-west-2",
             "amiDistributionConfiguration": {
                 "name": "CentOS-7_9_HVM-Nice-DCV-20210915-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
-                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
 "XXXXXXXXXXXX"                    ]
@@ -84,7 +84,7 @@ done
             "region": "eu-west-1",
             "amiDistributionConfiguration": {
                 "name": "CentOS-7_9_HVM-Nice-DCV-20210915-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
-                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
                 "launchPermission": {
                     "userIds": [
 "XXXXXXXXXXXX"                    ]
@@ -450,7 +450,7 @@ phases:
    #+begin_src js :tangle imagebuilder/configs/image-recipe-centos-7-with-nice-dcv.json :var release="0.1.6"
 {
     "name": "CentOS-7-with-Nice-DCV",
-    "description": "Configuration for building an AMI for CentOS 8.4 with Nice DCV",
+    "description": "Configuration for building an AMI for CentOS 7 with Nice DCV",
     "platform": "Linux",
     "owner": "806722994991",
     "version": "0.0.1",
@@ -459,7 +459,7 @@ phases:
             "componentArn": "arn:aws:imagebuilder:us-east-2:806722994991:component/add-nice---dcv/x.x.x"
         }
     ],
-    "parentImage": "ami-06126461a14d4e185",
+    "parentImage": "ami-00f8e2c955f7ffa9b",
     "blockDeviceMappings": [
         {
             "deviceName": "/dev/sda1",
@@ -474,7 +474,7 @@ phases:
     "tags": {
         "stage": "test",
         "maintained_by": "davdunc",
-        "CentOS_release": "7.9"
+        "CentOS_release": "7"
     },
     "clientToken": "SSSSSSSS"
     
@@ -526,7 +526,7 @@ phases:
     
    #+begin_src js
 { "name" : "CentOS7withNiceDCV",
-  "description": "Supporting Infrastructure for building CentOS 7.9 instances",
+  "description": "Supporting Infrastructure for building CentOS 7 instances",
   "instanceTypes": [
       "m5.large", "t3a.large"
   ],
@@ -538,7 +538,7 @@ phases:
   "logging": {
       "s3Logs": {
           "s3BucketName": "centos-with-nice-dcv-logging",
-          "s3KeyPrefix": "centos7/7.9/"
+          "s3KeyPrefix": "centos7/7/"
       }
   },
   "keyPair" : "davdunc@amazon.com",
@@ -551,7 +551,7 @@ phases:
    #+begin_src js
 {
     "infrastructureConfigurationArn": "arn:aws:imagebuilder:us-east-2:806722994991:CentOS7withNiceDCV",
-    "description" : "Supporting Infrastructure for building CentOS 7.9",
+    "description" : "Supporting Infrastructure for building CentOS 7",
     "instanceTypes": [
         "m5.large", "t3a.large"
     ],
@@ -563,7 +563,7 @@ phases:
     "logging": {
         "s3Logs": {
             "s3BucketName": "centos-with-nice-dcv-logging",
-            "s3KeyPrefix": "centos7/7.9/"
+            "s3KeyPrefix": "centos/7/"
         }
     },
     "keyPair" : "davdunc@amazon.com",
@@ -587,7 +587,7 @@ phases:
     "logging": {
         "s3Logs": {
             "s3BucketName": "centos-with-nice-dcv-logging",
-            "s3KeyPrefix": "centos8/Stream_8/"
+            "s3KeyPrefix": "centos/Stream_8/"
         }
     },
     "keyPair" : "davdunc@amazon.com",
