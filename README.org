@@ -1,0 +1,914 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: README for NICE-DCV
+#+date: <2021-09-28 Tue>
+#+author: David Duncan
+#+email: davdunc@amazon.com
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.0.50 (Org mode 9.4.6)
+#+PROPERTY: header-args :var VERSION="0.2.0"
+* Create directory structure
+  #+begin_src shell :tangle no :results silent
+mkdir -p ./configuration/etc/X11
+mkdir -p ./imagebuilder/configs ./imagebuilder/components
+mkdir -p ./scripts
+  #+end_src
+
+* CentOS Enteprise Linux with Nice-DCV
+  Build a test instance with the userdata necessary for the image recipe
+* Nice DCV version information
+*  Image Builder
+** Policy Requirements
+   
+** Distribution Settings
+*** CentOS 7.9 Distribution Settings
+    :PROPERTIES:
+    :header-args: :var VERSION="0.1.17"
+    :END:
+    Verify that the ARN is available
+    #+begin_src shell :results raw
+for ARN in $(aws imagebuilder list-distribution-configurations --query 'distributionConfigurationSummaryList[].arn' --output text)
+do
+    echo $ARN
+done
+
+    #+end_src
+
+    # removed arn from centos-7-dcv-installer.json 
+    #+header :tangle imagebuilder/configs/update-distribution-centos-7-dcv-installer.json
+    #+begin_src js
+{
+    "description": "CentOS Enterprise Linux 7 with Nice-DCV 2021.2-11048",
+    "distributionConfigurationArn": "arn:aws:imagebuilder:us-east-2:425685993791:distribution-configuration/nice-dcv-on-centos-7-9",
+
+    "distributions": [
+        {
+            "region": "us-east-1",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-7_9_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        },
+        {
+            "region": "us-east-2",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-7_9_HVM-YYYYMMDD-x86_64-1-Hourly2-GP2 {{imagebuilder:buildDate}}",
+                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        },
+        {
+            "region": "us-west-2",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-7_9_HVM-Nice-DCV-20210915-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        },
+        {
+            "region": "eu-west-1",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-7_9_HVM-Nice-DCV-20210915-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "description": "CentOS Enterprise Linux 7.9 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        } 
+    ],
+    "clientToken": "SSSSSSSS"
+    
+}
+    #+end_src
+
+*** CentOS 8 Stream Distribution Settings
+    "distributionConfigurationArn": "arn:aws:imagebuilder:us-east-2:425685993791:distribution-configuration/nice-dcv-on-centos-8-1",
+    
+    #+begin_src js :tangle imagebuilder/configs/update-distribution-centos-8-dcv-installer.json
+{
+    "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
+    "distributions": [
+        {
+            "region": "us-east-1",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-8_4_0_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        },
+        {
+            "region": "us-east-2",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-8_4_0_HVM-YYYYMMDD-x86_64-1-Hourly2-GP2 {{imagebuilder:buildDate}}",
+                "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        },
+        {
+            "region": "us-west-2",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-8_4_0_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        },
+        {
+            "region": "eu-west-1",
+            "amiDistributionConfiguration": {
+                "name": "CentOS-8_4_0_HVM-Nice-DCV-YYYYMMDD-x86_64-1-Hourly2-GP2 {{ imagebuilder:buildDate }}",
+                "description": "CentOS Enterprise Linux Stream_8 with Nice-DCV 2021.2-11048",
+                "launchPermission": {
+                    "userIds": [
+                        "779356877618",
+                        "068406267472",
+                        "679593333241",
+                        "593130699285",
+                        "582767206473"
+                    ]
+                }
+            }
+        }
+    ],
+    "clientToken": "SSSSSSSS"
+    
+}
+    #+end_src
+
+    #+name: distribution-centos-8-dcv-installer
+    #+begin_src shell :tangle scripts/update-distribution-centos-8-dcv-installer.sh :shebang "#!/bin/bash"
+build_date=$(date +%Y%m%d) 
+
+aws imagebuilder update-distribution-configuration --region us-east-2 \
+    --cli-input-json file://imagebuilder/configs/update-distribution-centos-8-dcv-installer.json
+    #+end_src
+
+** Components
+*** CentOS-8-installer
+    #+NAME: component_versions
+    ('el8' 'el7')
+
+    #+begin_src yaml :tangle imagebuilder/components/centos-8-installer.yml 
+---
+name: NiceDCVInstallationDocument
+description: download and install version {{ dcvVersion }} for Nice-DCV for CentOS and CentOS Stream 8
+schemaVersion: 1.0
+
+constants:
+  - dcvVersion:
+      type: string
+      value: 2021.2
+  - dcvPatchLevel:
+      type: string
+      value: 11048
+  - dcvRPMRelease:
+      type: string
+      value: 1
+phases:
+  - name: build
+    steps:
+      - name: Download
+        action: WebDownload
+        timeoutSeconds: 240
+        onFailure: Abort
+        maxAttempts: 3
+        inputs:
+          - destination: "/tmp/nice-dcv-{{ dcvVersion }}-{{ dcvPatchLevel }}-el8-x86_64.tgz"
+            source: "https://d1uj6qtbmh3dt5.cloudfront.net/{{ dcvVersion }}/Servers/nice-dcv-{{ dcvVersion }}-{{ dcvPatchLevel }}-el8-x86_64.tgz"
+      - name: ImportRPMkey
+        action: ExecuteBash
+        timeoutSeconds: 60
+        inputs:
+          commands:
+            - sudo rpm --import https://d1uj6qtbmh3dt5.cloudfront.net/NICE-GPG-KEY
+      - name: RPMExtraction
+        action: ExecuteBash
+        timeoutSeconds: 60
+        inputs:
+          commands:
+            - "tar -xvzf {{ build.Download.inputs[0].destination }} -C /tmp/"
+      - name: InstallDesktop
+        action: ExecuteBash
+        timeoutSeconds: 3600
+        maxAttempts: 3
+        inputs:
+          commands:
+            - sudo dnf group install --quiet -y 'Server with GUI'
+            - sudo dnf upgrade -y --quiet
+      - name: RPMinstall
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo dnf install -y --quiet /tmp/nice-dcv-{{ dcvVersion }}-{{ dcvPatchLevel }}-el8-x86_64/nice-dcv-server-{{ dcvVersion }}.{{ dcvPatchLevel }}-{{ dcvRPMRelease }}.el8.x86_64.rpm
+            - sudo dnf install -y --quiet https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+            - sudo dnf install -y --quiet dkms # dkms is needed for usb and webcam support
+            - sudo dnf remove -y --quiet epel-release-latest # don't leave epel enabled on the system
+            - sudo dnf install -y --quiet pulseaudio-utils
+      - name: InstallGlxinfo
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo dnf install -y --quiet glx-utils
+      - name: EnableDCVService
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo systemctl enable --now dcvserver
+      - name: ConfigurePrinterRedirection
+        action: ExecuteBash
+        timeoutSeconds: 3600
+        inputs:
+          commands:
+            - sudo groupadd -f lpadmin
+            - sudo usermod -a -G lpadmin dcv
+      - name: AddSpiceVideoDummy
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+                echo "TODO: Add Spice-video-dummy"
+      - name: DisableWaylandProtocol
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo sed -i -e "s|\#\(WaylandEnable\)=.*|\1\=false|" /etc/gdm/custom.conf
+            - sudo systemctl restart gdm
+            - sudo systemctl set-default graphical.target
+            - sudo systemctl isolate graphical.target
+      - name: redirectingUSB
+        onFailure: Ignore
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo dcvusbdriverinstaller --quiet
+      - name: ConfigureSoundServer
+        onFailure: Ignore
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+              sudo echo "load-module module-null-sink sink_name=dcv format=s16be channels=6 channel_map=front-left,front-right,rear-left,rear-right,front-center,lfe rate=48000 sink_properties=\"device.description=\'DCV Audio Speakers\'\"" >> /etc/pulse/default.pa
+      - name: DeleteRPMsFolder
+        action: DeleteFolder
+        inputs:
+          - path: /tmp/nice-dcv-{{ dcvVersion }}-{{ dcvPatchLevel }}-el8-x86_64
+            force: true
+      - name: DeleteArchive
+        action: DeleteFile
+        inputs:
+          - path: "{{ build.Download.inputs[0].destination }}"
+      - name: DeleteFirewalld
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo dnf remove -y --quiet firewalld
+
+  - name: validate
+    steps:
+      - name: VerifyXserver
+        action: ExecuteBash
+        inputs:
+          commands:
+            - grep -q "WaylandEnable=false" /etc/gdm/custom.conf || exit 1
+
+      - name: RunGlxinfo
+        action: ExecuteBash
+        onFailure: Ignore # expected to fail since I don't have xauth in SSM and typically no opengl
+        inputs:
+          commands:
+            - sudo dnf install -y --quiet glx-utils
+            - |
+              sudo DISPLAY=:0 XAUTHORITY=$(ps aux | grep "X.*\-auth" | grep -v grep | sed -n 's/.*-auth \([^ ]\+\).*/\1/p') glxinfo | grep -q -i "opengl.*version"
+    #+end_src
+
+    #+begin_src shell :tangle scripts/create-component-centos-8-dcv-installer.sh :shebang "#!/bin/bash"
+set -x
+# run from root directory as the paths are relative to the root.
+semver=$VERSION
+change_description="There is no way to extract useful information on glx-utils from ssm agent"
+component_name="centos-8-installer.yml"
+s3_uri="s3://centos-nice-dcv-image-builder-conf/components/${component_name}"
+aws s3 cp imagebuilder/components/${component_name} ${s3_uri}
+
+aws imagebuilder create-component --region us-east-2 --name "Add Nice - DCV" --semantic-version ${semver} \
+    --description "Include Nice - DCV client in image" \
+    --supported-os-versions "CentOS Enterprise Linux 8","CentOS Linux 8" \
+    --platform "Linux" \
+    --tags maintained_by=davdunc,stage=test,version=1 \
+    --uri $s3_uri --change-description "${change_description}"
+    #+end_src
+*** CentOS 7 Installer
+    #+begin_src yaml :tangle imagebuilder/components/centos-7-installer.yml
+      ---
+name: NiceDCVInstallationDocument
+description: download and install version {{ dcvVersion }} for Nice-DCV for CentOS and CentOS Stream 7
+schemaVersion: 1.0
+
+constants:
+  - dcvVersion:
+      type: string
+      value: 2021.2
+  - dcvPatchLevel:
+      type: string
+      value: 11048
+  - dcvRPMRelease:
+      type: string
+      value: 1
+  - elVersion:
+      type: string
+      value: el7
+
+phases:
+  - name: build
+    steps:
+      - name: Dofwnload
+        action: WebDownload
+        timeoutSeconds: 240
+        onFailure: Abort
+        maxAttempts: 3
+        inputs:
+          - destination: "/tmp/nice-dcv-{{ dcvVersion }}-{{ dcvPatchLevel }}-{{ elVersion }}-x86_64.tgz              source: "https://d1uj6qtbmh3dt5.cloudfront.net/{{ dcvVersion }}/Servers/nice-dcv-{{ dcvVe}}-{{ dcvPatchLevel }}-{{ elVersion }}-x86_64.tgz"
+      - name: ImportRPMkey
+        action: ExecuteBash
+        timeoutSeconds: 60
+        inputs:
+          commands:
+            - sudo rpm --import https://d1uj6qtbmh3dt5.cloudfront.net/NICE-GPG-KEY
+      - name: RPMExtraction
+        action: ExecuteBash
+        timeoutSeconds: 60
+        inputs:
+          commands:
+            - "tar -xvzf {{ build.Download.inputs[0].destination }} -C /tmp/"
+      - name: InstallDesktop
+        action: ExecuteBash
+        timeoutSeconds: 3600
+        maxAttempts: 3
+        inputs:
+          commands:
+            - sudo yum group install --quiet -y 'Server with GUI'
+            - sudo yum upgrade -y --quiet
+      - name: RPMinstall
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo yum install -y --quiet /tmp/nice-dcv-{{ dcvVersion }}-{{ dcvPatchLevel }}-{{ elVersix86_64/nice-dcv-server-{{ dcvVersion }}.{{ dcvPatchLevel }}-{{ dcvRPMRelease }}.{{ elVersion }}.x86_64.                - sudo yum install -y --quiet https://dl.fedoraproject.org/pub/epel/epel-release-latestrch.rpm
+            - sudo yum install -y --quiet dkms # dkms is needed for usb and webcam support
+            - sudo yum remove -y --quiet epel-release-latest # don't leave epel enabled on the system
+            - sudo yum install -y --quiet pulseaudio-utils
+      - name: InstallGlxinfo
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo yum install -y --quiet glx-utils
+      - name: EnableDCVService
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo systemctl enable --now dcvserver
+      - name: ConfigurePrinterRedirection
+        action: ExecuteBash
+        timeoutSeconds: 3600
+        inputs:
+          commands:
+            - sudo groupadd -f lpadmin
+            - sudo usermod -a -G lpadmin dcv
+      - name: AddSpiceVideoDummy
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+                echo "TODO: Add Spice-video-dummy"
+      - name: DisableWaylandProtocol
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo systemctl restart gdm
+            - sudo systemctl set-default graphical.target
+            - sudo systemctl isolate graphical.target
+      - name: redirectingUSB
+        onFailure: Ignore
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo dcvusbdriverinstaller --quiet
+      - name: ConfigureSoundServer
+        onFailure: Ignore
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+              sudo echo "load-module module-null-sink sink_name=dcv format=s16be channels=6 channel_map-left,front-right,rear-left,rear-right,front-center,lfe rate=48000 sink_properties=\"device.description Audio Speakers\'\"" >> /etc/pulse/default.pa
+      - name: DeleteRPMsFolder
+        action: DeleteFolder
+        inputs:
+          - path: /tmp/nice-dcv-{{ dcvVersion }}-{{ dcvPatchLevel }}-{{ elVersion }}-x86_64
+            force: true
+      - name: DeleteArchive
+        action: DeleteFile
+        inputs:
+          - path: "{{ build.Download.inputs[0].destination }}"
+      - name: DeleteFirewalld
+        action: ExecuteBash
+        inputs:
+          commands:
+            - sudo yum remove -y --quiet firewalld
+
+  - name: validate
+    steps:
+      - name: RunGlxinfo
+        action: ExecuteBash
+        onFailure: Ignore # expected to fail since I don't have xauth in SSM and typically no opengl
+        inputs:
+          commands:
+            - sudo yum install -y --quiet glx-utils
+            - |
+              sudo DISPLAY=:0 XAUTHORITY=$(ps aux | grep "X.*\-auth" | grep -v grep | sed -n 's/.*-auth \([^ ]\+\).*/\1/p') glxinfo | grep -q -i "opengl.*version"
+    #+end_src    
+
+** Image Recipes
+*** CentOS 7 Image Recipe
+   #+begin_src js :tangle imagebuilder/configs/image-recipe-centos-7-with-nice-dcv.json :var release="0.1.6"
+{
+    "name": "CentOS-7-with-Nice-DCV",
+    "description": "Configuration for building an AMI for CentOS 8.4 with Nice DCV",
+    "platform": "Linux",
+    "owner": "425685993791",
+    "version": "0.0.1",
+    "components": [
+        {
+            "componentArn": "arn:aws:imagebuilder:us-east-2:425685993791:component/add-nice---dcv/x.x.x"
+        }
+    ],
+    "parentImage": "ami-06126461a14d4e185",
+    "blockDeviceMappings": [
+        {
+            "deviceName": "/dev/sda1",
+            "ebs": {
+                "encrypted": false,
+                "deleteOnTermination": true,
+                "volumeSize": 10,
+                "volumeType": "gp2"
+            }
+        }
+    ],
+    "tags": {
+        "stage": "test",
+        "maintained_by": "davdunc",
+        "CentOS_release": "7.9"
+    },
+    "clientToken": "SSSSSSSS"
+    
+}
+   #+end_src
+    
+*** CentOS 8 Image Recipe
+   #+begin_src js :tangle imagebuilder/configs/image-recipe-centos-8-with-nice-dcv.json
+{
+    "arn": "arn:aws:imagebuilder:us-east-2:425685993791:image-recipe/centos-with-nice-dcv/0.1.6",
+    "name": "CentOS-8-with-Nice-DCV",
+    "description": "Configuration for building an AMI for CentOS 8.4 with Nice DCV",
+    "platform": "Linux",
+    "owner": "425685993791",
+    "version": "0.1.6",
+    "components": [
+        {
+            "componentArn": "arn:aws:imagebuilder:us-east-2:425685993791:component/add-nice---dcv/x.x.x"
+        }
+    ],
+    "parentImage": "ami-06126461a14d4e185",
+    "blockDeviceMappings": [
+        {
+            "deviceName": "/dev/sda1",
+            "ebs": {
+                "encrypted": false,
+                "deleteOnTermination": true,
+                "volumeSize": 10,
+                "volumeType": "gp2"
+            }
+        }
+    ],
+    "tags": {
+        "stage": "test",
+        "maintained_by": "davdunc",
+        "CentOS_release": "Stream_8"
+    },
+    "clientToken": "SSSSSSSS"
+    
+}
+
+   #+end_src
+   #+begin_src shell
+
+   #+end_src
+** Infrastructure Configurations
+*** CentOS 7 Infrastructure Configuration
+    Standard Infrastructure Config:
+    
+   #+begin_src js
+{ "name" : "CentOS7withNiceDCV",
+  "description": "Supporting Infrastructure for building CentOS 7.9 instances",
+  "instanceTypes": [
+      "m5.large", "t3a.large"
+  ],
+  "instanceProfileName": "imagebuilderProfileDCV",
+  "securityGroupIds" : [
+      "sg-XXXXXXXX"
+  ],
+  "subnetId", "sub-XXXXXXXX",
+  "logging": {
+      "s3Logs": {
+          "s3BucketName": "centos-with-nice-dcv-logging",
+          "s3KeyPrefix": "centos7/7.9/"
+      }
+  },
+  "keyPair" : "davdunc@amazon.com",
+  "terminateInstanceOnFailure" : false,
+  "snsTopicArn": "arn:aws:sns:us-east-2:425685993791:CentOSDCV"
+}
+   #+end_src
+
+   Update infrastructure configuration:
+   #+begin_src js
+{
+    "infrastructureConfigurationArn": "arn:aws:imagebuilder:us-east-2:425685993791:CentOS7withNiceDCV",
+    "description" : "Supporting Infrastructure for building CentOS 7.9",
+    "instanceTypes": [
+        "m5.large", "t3a.large"
+    ],
+    "instanceProfileName": "imagebuilderProfileDCV",
+    "securityGroupIds" : [
+        "sg-XXXXXXXX"
+    ],
+    "subnetId", "sub-XXXXXXXX",
+    "logging": {
+        "s3Logs": {
+            "s3BucketName": "centos-with-nice-dcv-logging",
+            "s3KeyPrefix": "centos7/7.9/"
+        }
+    },
+    "keyPair" : "davdunc@amazon.com",
+    "terminateInstanceOnFailure" : false,
+    "snsTopicArn": "arn:aws:sns:us-east-2:425685993791:CentOSDCV"
+}
+   #+end_src
+*** CentOS 8 Infrastructure Configuration
+    #+begin_src js
+{
+    "name" : "CentOS8withNiceDCV",
+    "description": "Supporting Infrastructure for building CentOS Stream_8 instances",
+    "instanceTypes": [
+        "m5.large", "t3a.large"
+    ],
+    "instanceProfileName": "imagebuilderProfileDCV",
+    "securityGroupIds" : [
+        "sg-XXXXXXXX"
+    ],
+    "subnetId", "sub-XXXXXXXX",
+    "logging": {
+        "s3Logs": {
+            "s3BucketName": "centos-with-nice-dcv-logging",
+            "s3KeyPrefix": "centos8/Stream_8/"
+        }
+    },
+    "keyPair" : "davdunc@amazon.com",
+    "terminateInstanceOnFailure" : false,
+    "snsTopicArn": "arn:aws:sns:us-east-2:425685993791:CentOSDCV"
+}
+    #+end_src
+** Sync to S3 for Access    
+    Sync to s3 for access
+
+    #+begin_src shell :tangle scripts/sync-to-s3-conf-bucket.sh :shebang "#!/bin/bash"
+aws s3 sync /home/ANT.AMAZON.COM/davdunc/src/centos-with-nice-dcv/ s3://centos-nice-dcv-image-builder-conf/
+    #+end_src
+
+    #+RESULTS:
+** Configuration Files
+   #+begin_src conf :tangle ./configuration/etc/X11/dummy-xorg.conf 
+     Section "ServerFlags"
+       Option "DontVTSwitch" "true"
+       Option "AllowMouseOpenFail" "true"
+       Option "PciForceNone" "true"
+       Option "AutoEnableDevices" "false"
+       Option "AutoAddDevices" "false"
+     EndSection
+     
+     Section "InputDevice"
+       Identifier "dummy_mouse"
+       Option "CorePointer" "true"
+       Driver "void"
+     EndSection
+     
+     Section "InputDevice"
+       Identifier "dummy_keyboard"
+       Option "CoreKeyboard" "true"
+       Driver "void"
+     EndSection
+     
+     Section "Device"
+       Identifier "dummy_videocard"
+       Driver "dummy"
+       Option "ConstantDPI" "true"
+       Option "NoDDC" "true"
+       Option "IgnoreEDID" "true"
+       #VideoRam 4096000
+       VideoRam 2048000
+       #VideoRam 256000
+       #VideoRam 192000
+     EndSection
+     
+     Section "Monitor"
+       Identifier "dummy_monitor"
+       HorizSync   5.0 - 1000.0
+       VertRefresh 5.0 - 200.0
+       #This can be used to get a specific DPI, but only for the default resolution:
+       #DisplaySize 508 317
+       #NOTE: the highest modes will not work without increasing the VideoRam
+       # for the dummy video card.
+       Modeline "32768x32768" 15226.50 32768 35800 39488 46208 32768 32771 32781 32953
+       Modeline "32768x16384" 7516.25 32768 35544 39192 45616 16384 16387 16397 16478
+       Modeline "16384x8192" 2101.93 16384 16416 24400 24432 8192 8390 8403 8602
+       Modeline "8192x4096" 424.46 8192 8224 9832 9864 4096 4195 4202 4301
+       Modeline "5496x1200" 199.13 5496 5528 6280 6312 1200 1228 1233 1261
+       Modeline "5280x1080" 169.96 5280 5312 5952 5984 1080 1105 1110 1135
+       Modeline "5280x1200" 191.40 5280 5312 6032 6064 1200 1228 1233 1261
+       #Modeline "5120x3200" 199.75 5120 5152 5904 5936 3200 3277 3283 3361
+       Modeline "4800x1200" 64.42 4800 4832 5072 5104 1200 1229 1231 1261
+       Modeline "4096x2160" 760.00 4096 4432 4880 5664 2160 2163 2173 2237
+       Modeline "3840x2160" 712.75 3840 4160 4576 5312 2160 2163 2168 2237
+       Modeline "3840x2880" 133.43 3840 3872 4376 4408 2880 2950 2955 3025
+       Modeline "3840x2560" 116.93 3840 3872 4312 4344 2560 2622 2627 2689
+       Modeline "3840x2048" 91.45 3840 3872 4216 4248 2048 2097 2101 2151
+       Modeline "3840x1080" 100.38 3840 3848 4216 4592 1080 1081 1084 1093
+       Modeline "3600x1200" 106.06 3600 3632 3984 4368 1200 1201 1204 1214
+       Modeline "3288x1080" 39.76 3288 3320 3464 3496 1080 1106 1108 1135
+       Modeline "2560x1440" 312.25 2560 2752 3024 3488 1440 1443 1448 1493
+       Modeline "2048x2048" 49.47 2048 2080 2264 2296 2048 2097 2101 2151
+       Modeline "2048x1536" 80.06 2048 2104 2312 2576 1536 1537 1540 1554
+       Modeline "2560x1600" 47.12 2560 2592 2768 2800 1600 1639 1642 1681
+       Modeline "2560x1440" 42.12 2560 2592 2752 2784 1440 1475 1478 1513
+       Modeline "1920x1440" 69.47 1920 1960 2152 2384 1440 1441 1444 1457
+       Modeline "1920x1200" 26.28 1920 1952 2048 2080 1200 1229 1231 1261
+       Modeline "1920x1080" 23.53 1920 1952 2040 2072 1080 1106 1108 1135
+       Modeline "1680x1050" 20.08 1680 1712 1784 1816 1050 1075 1077 1103
+       Modeline "1600x1200" 22.04 1600 1632 1712 1744 1200 1229 1231 1261
+       Modeline "1600x900" 33.92 1600 1632 1760 1792 900 921 924 946
+       Modeline "1440x900" 30.66 1440 1472 1584 1616 900 921 924 946
+       ModeLine "1366x768" 72.00 1366 1414 1446 1494  768 771 777 803
+       Modeline "1280x1024" 31.50 1280 1312 1424 1456 1024 1048 1052 1076
+       Modeline "1280x800" 24.15 1280 1312 1400 1432 800 819 822 841
+       Modeline "1280x768" 23.11 1280 1312 1392 1424 768 786 789 807
+       Modeline "1360x768" 24.49 1360 1392 1480 1512 768 786 789 807
+       Modeline "1024x768" 18.71 1024 1056 1120 1152 768 786 789 807
+       Modeline "768x1024" 19.50 768 800 872 904 1024 1048 1052 1076
+     
+     
+       #common resolutions for android devices (both orientations):
+       Modeline "800x1280" 25.89 800 832 928 960 1280 1310 1315 1345
+       Modeline "1280x800" 24.15 1280 1312 1400 1432 800 819 822 841
+       Modeline "720x1280" 30.22 720 752 864 896 1280 1309 1315 1345
+       Modeline "1280x720" 27.41 1280 1312 1416 1448 720 737 740 757
+       Modeline "768x1024" 24.93 768 800 888 920 1024 1047 1052 1076
+       Modeline "1024x768" 23.77 1024 1056 1144 1176 768 785 789 807
+       Modeline "600x1024" 19.90 600 632 704 736 1024 1047 1052 1076
+       Modeline "1024x600" 18.26 1024 1056 1120 1152 600 614 617 631
+       Modeline "536x960" 16.74 536 568 624 656 960 982 986 1009
+       Modeline "960x536" 15.23 960 992 1048 1080 536 548 551 563
+       Modeline "600x800" 15.17 600 632 688 720 800 818 822 841
+       Modeline "800x600" 14.50 800 832 880 912 600 614 617 631
+       Modeline "480x854" 13.34 480 512 560 592 854 873 877 897
+       Modeline "848x480" 12.09 848 880 920 952 480 491 493 505
+       Modeline "480x800" 12.43 480 512 552 584 800 818 822 841
+       Modeline "800x480" 11.46 800 832 872 904 480 491 493 505
+       #resolutions for android devices (both orientations)
+       #minus the status bar
+       #38px status bar (and width rounded up)
+       Modeline "800x1242" 25.03 800 832 920 952 1242 1271 1275 1305
+       Modeline "1280x762" 22.93 1280 1312 1392 1424 762 780 783 801
+       Modeline "720x1242" 29.20 720 752 856 888 1242 1271 1276 1305
+       Modeline "1280x682" 25.85 1280 1312 1408 1440 682 698 701 717
+       Modeline "768x986" 23.90 768 800 888 920 986 1009 1013 1036
+       Modeline "1024x730" 22.50 1024 1056 1136 1168 730 747 750 767
+       Modeline "600x986" 19.07 600 632 704 736 986 1009 1013 1036
+       Modeline "1024x562" 17.03 1024 1056 1120 1152 562 575 578 591
+       Modeline "536x922" 16.01 536 568 624 656 922 943 947 969
+       Modeline "960x498" 14.09 960 992 1040 1072 498 509 511 523
+       Modeline "600x762" 14.39 600 632 680 712 762 779 783 801
+       Modeline "800x562" 13.52 800 832 880 912 562 575 578 591
+       Modeline "480x810" 12.59 480 512 552 584 810 828 832 851
+       Modeline "848x442" 11.09 848 880 920 952 442 452 454 465
+       Modeline "480x762" 11.79 480 512 552 584 762 779 783 801
+     EndSection
+     
+     Section "Monitor"
+       Identifier "dummy_monitor2"
+       HorizSync   5.0 - 1000.0
+       VertRefresh 5.0 - 200.0
+       Option "RightOf" "dummy_monitor"
+       #This can be used to get a specific DPI, but only for the default resolution:
+       #DisplaySize 508 317
+       #NOTE: the highest modes will not work without increasing the VideoRam
+       # for the dummy video card.
+       Modeline "32768x32768" 15226.50 32768 35800 39488 46208 32768 32771 32781 32953
+       Modeline "32768x16384" 7516.25 32768 35544 39192 45616 16384 16387 16397 16478
+       Modeline "16384x8192" 2101.93 16384 16416 24400 24432 8192 8390 8403 8602
+       Modeline "8192x4096" 424.46 8192 8224 9832 9864 4096 4195 4202 4301
+       Modeline "5496x1200" 199.13 5496 5528 6280 6312 1200 1228 1233 1261
+       Modeline "5280x1080" 169.96 5280 5312 5952 5984 1080 1105 1110 1135
+       Modeline "5280x1200" 191.40 5280 5312 6032 6064 1200 1228 1233 1261
+       #Modeline "5120x3200" 199.75 5120 5152 5904 5936 3200 3277 3283 3361
+       Modeline "4800x1200" 64.42 4800 4832 5072 5104 1200 1229 1231 1261
+       Modeline "4096x2160" 760.00 4096 4432 4880 5664 2160 2163 2173 2237
+       Modeline "3840x2160" 712.75 3840 4160 4576 5312 2160 2163 2168 2237
+       Modeline "3840x2880" 133.43 3840 3872 4376 4408 2880 2950 2955 3025
+       Modeline "3840x2560" 116.93 3840 3872 4312 4344 2560 2622 2627 2689
+       Modeline "3840x2048" 91.45 3840 3872 4216 4248 2048 2097 2101 2151
+       Modeline "3840x1080" 100.38 3840 3848 4216 4592 1080 1081 1084 1093
+       Modeline "3600x1200" 106.06 3600 3632 3984 4368 1200 1201 1204 1214
+       Modeline "3288x1080" 39.76 3288 3320 3464 3496 1080 1106 1108 1135
+       Modeline "2560x1440" 312.25 2560 2752 3024 3488 1440 1443 1448 1493
+       Modeline "2048x2048" 49.47 2048 2080 2264 2296 2048 2097 2101 2151
+       Modeline "2048x1536" 80.06 2048 2104 2312 2576 1536 1537 1540 1554
+       Modeline "2560x1600" 47.12 2560 2592 2768 2800 1600 1639 1642 1681
+       Modeline "2560x1440" 42.12 2560 2592 2752 2784 1440 1475 1478 1513
+       Modeline "1920x1440" 69.47 1920 1960 2152 2384 1440 1441 1444 1457
+       Modeline "1920x1200" 26.28 1920 1952 2048 2080 1200 1229 1231 1261
+       Modeline "1920x1080" 23.53 1920 1952 2040 2072 1080 1106 1108 1135
+       Modeline "1680x1050" 20.08 1680 1712 1784 1816 1050 1075 1077 1103
+       Modeline "1600x1200" 22.04 1600 1632 1712 1744 1200 1229 1231 1261
+       Modeline "1600x900" 33.92 1600 1632 1760 1792 900 921 924 946
+       Modeline "1440x900" 30.66 1440 1472 1584 1616 900 921 924 946
+       ModeLine "1366x768" 72.00 1366 1414 1446 1494  768 771 777 803
+       Modeline "1280x1024" 31.50 1280 1312 1424 1456 1024 1048 1052 1076
+       Modeline "1280x800" 24.15 1280 1312 1400 1432 800 819 822 841
+       Modeline "1280x768" 23.11 1280 1312 1392 1424 768 786 789 807
+       Modeline "1360x768" 24.49 1360 1392 1480 1512 768 786 789 807
+       Modeline "1024x768" 18.71 1024 1056 1120 1152 768 786 789 807
+       Modeline "768x1024" 19.50 768 800 872 904 1024 1048 1052 1076
+     
+     
+       #common resolutions for android devices (both orientations):
+       Modeline "800x1280" 25.89 800 832 928 960 1280 1310 1315 1345
+       Modeline "1280x800" 24.15 1280 1312 1400 1432 800 819 822 841
+       Modeline "720x1280" 30.22 720 752 864 896 1280 1309 1315 1345
+       Modeline "1280x720" 27.41 1280 1312 1416 1448 720 737 740 757
+       Modeline "768x1024" 24.93 768 800 888 920 1024 1047 1052 1076
+       Modeline "1024x768" 23.77 1024 1056 1144 1176 768 785 789 807
+       Modeline "600x1024" 19.90 600 632 704 736 1024 1047 1052 1076
+       Modeline "1024x600" 18.26 1024 1056 1120 1152 600 614 617 631
+       Modeline "536x960" 16.74 536 568 624 656 960 982 986 1009
+       Modeline "960x536" 15.23 960 992 1048 1080 536 548 551 563
+       Modeline "600x800" 15.17 600 632 688 720 800 818 822 841
+       Modeline "800x600" 14.50 800 832 880 912 600 614 617 631
+       Modeline "480x854" 13.34 480 512 560 592 854 873 877 897
+       Modeline "848x480" 12.09 848 880 920 952 480 491 493 505
+       Modeline "480x800" 12.43 480 512 552 584 800 818 822 841
+       Modeline "800x480" 11.46 800 832 872 904 480 491 493 505
+       #resolutions for android devices (both orientations)
+       #minus the status bar
+       #38px status bar (and width rounded up)
+       Modeline "800x1242" 25.03 800 832 920 952 1242 1271 1275 1305
+       Modeline "1280x762" 22.93 1280 1312 1392 1424 762 780 783 801
+       Modeline "720x1242" 29.20 720 752 856 888 1242 1271 1276 1305
+       Modeline "1280x682" 25.85 1280 1312 1408 1440 682 698 701 717
+       Modeline "768x986" 23.90 768 800 888 920 986 1009 1013 1036
+       Modeline "1024x730" 22.50 1024 1056 1136 1168 730 747 750 767
+       Modeline "600x986" 19.07 600 632 704 736 986 1009 1013 1036
+       Modeline "1024x562" 17.03 1024 1056 1120 1152 562 575 578 591
+       Modeline "536x922" 16.01 536 568 624 656 922 943 947 969
+       Modeline "960x498" 14.09 960 992 1040 1072 498 509 511 523
+       Modeline "600x762" 14.39 600 632 680 712 762 779 783 801
+       Modeline "800x562" 13.52 800 832 880 912 562 575 578 591
+       Modeline "480x810" 12.59 480 512 552 584 810 828 832 851
+       Modeline "848x442" 11.09 848 880 920 952 442 452 454 465
+       Modeline "480x762" 11.79 480 512 552 584 762 779 783 801
+     EndSection
+     
+     Section "Screen"
+       Identifier "dummy_screen"
+       Device "dummy_videocard"
+       Monitor "dummy_monitor"
+       DefaultDepth 24
+       SubSection "Display"
+         Viewport 0 0
+         Depth 24
+         #Modes "32768x32768" "32768x16384" "16384x8192" "8192x4096" "5120x3200" "3840x2880" "3840x2560" "3840x2048" "2048x2048" "2560x1600" "1920x1440" "1920x1200" "1920x1080" "1600x1200" "1680x1050" "1600x900" "1400x1050" "1440x900" "1280x1024" "1366x768" "1280x800" "1024x768" "1024x600" "800x600" "320x200"
+         Modes "4096x2160" "3840x2880" "3840x2560" "3840x2160" "3840x2048" "2048x2048" "2560x1600" "2560x1440" "1920x1440" "1920x1200" "1920x1080" "1600x1200" "1680x1050" "1600x900" "1400x1050" "1440x900" "1280x1024" "1366x768" "1280x800" "1024x768" "1024x600" "800x600" "320x200"
+         #Modes "1600x900" "1400x1050" "1440x900" "1280x1024" "1366x768" "1280x800" "1024x768" "1024x600" "800x600" "320x200"
+         #Virtual 32000 32000
+         #Virtual 16384 8192
+         #Virtual 8192 4096
+         #Virtual 5120 3200
+         virtual 4096 2160
+         #virtual 1920 1080
+         #Virtual 1600 900
+       EndSubSection
+     EndSection
+     
+     Section "ServerLayout"
+       Identifier   "dummy_layout"
+       Screen       "dummy_screen"
+       InputDevice  "dummy_mouse"
+       InputDevice  "dummy_keyboard"
+     EndSection
+     
+   #+end_src
+   #+begin_src shell :shebang "#!/bin/bash" :tangle scripts/update-metadata.sh :results none
+for CONFIG in ./imagebuilder/configs/*.json
+do
+    sed -i -e 's/YYYYMMDD/'$(date +%Y%m%d)'/g' $CONFIG
+    sed -i -e 's/SSSSSSSS/token-'$(date +%s)'/g' $CONFIG
+    sed -i -e 's/VERSION/'$VERSION'/g' $CONFIG
+    sleep 1
+done
+   #+end_src
+*** Update the Components to latest
+    #+header :var conf_s3_bucket=centos-nice-dcv-image-builder-conf
+    #+begin_src shell :tangle scripts/update-distribution-centos-dcv-installers.sh :shebang "#!/bin/bash"
+aws s3 cp ./imagebuilder/components/centos-8-installer.yml $conf_s3_bucket
+aws s3 cp ./imagebuilder/components/centos-7-installer.yml $conf_s3_bucket
+    
+aws imagebuilder update-distribution-configuration --region us-east-2 \
+    --cli-input-json file://imagebuilder/configs/update-distribution-centos-7-dcv-installer.json
+aws imagebuilder update-distribution-configuration --region us-east-2 \
+    --cli-input-json file://imagebuilder/configs/update-distribution-centos-8-dcv-installer.json
+    #+end_src
+   #+begin_src shell :tangle scripts/create-image-recipe-centos-with-nice-dcv.sh :shebang "#!/bin/bash"
+aws imagebuilder --region us-east-2 create-image-recipe \
+    --cli-input-json file://imagebuilder/configs/image-recipe-centos-8-with-nice-dcv.json
+aws imagebuilder --region us-east-2 create-image-recipe \
+    --cli-input-json file://imagebuilder/configs/image-recipe-centos-7-with-nice-dcv.json
+   #+end_src
+
+** Makefile
+   #+begin_src makefile :tangle Makefile
+.PHONY: sync build
+
+build:
+	./scripts/update-metadata.sh
+	./scripts/update-distribution-centos-dcv-installers.sh
+	
+
+sync: build
+	./scripts/sync-to-s3-conf-bucket.sh
+   #+end_src
